@@ -1,0 +1,14 @@
+[workspace]
+
+# the server executable binary is called "webpage_hits_admin"
+
+members = [
+    "tier2_web_server_actix_postgres"
+]
+
+exclude = [
+    "automation_tasks_rs",
+    "web_server_folder",
+    "tier1_browser_wasm",
+    "tier3_database_postgres"
+]

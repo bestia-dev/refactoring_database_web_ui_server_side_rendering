@@ -1,0 +1,43 @@
+{
+    "cSpell.words": [
+        "actix",
+        "Alla",
+        "bestia",
+        "bindgen",
+        "buildah",
+        "crev",
+        "DBNAME",
+        "deadpool",
+        "dotenv",
+        "endregion",
+        "enduml",
+        "Nazdravlje",
+        "onclick",
+        "onfocus",
+        "Outro",
+        "plantuml",
+        "Prost",
+        "psql",
+        "rustflags",
+        "rustfmt",
+        "rustlang",
+        "serde",
+        "startuml",
+        "stylesheet",
+        "thiserror",
+        "Webassembly",
+        "zdravje"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "localhost:5432",
+            "database": "webpage_hit_counter",
+            "username": "admin"
+        }
+    ]
+}
