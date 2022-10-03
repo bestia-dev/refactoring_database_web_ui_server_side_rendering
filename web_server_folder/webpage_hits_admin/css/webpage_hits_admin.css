@@ -1,6 +1,6 @@
 /* css variables */
 
-    :root {
+:root {
     /* color palette */
     /* use of variables: var(--color_tooltip_1); */
     /* background color */
@@ -33,7 +33,7 @@ html {
 }
 
 body {
-    margin: 0;
+    margin: 10px;
     padding: 0;
     font-size: 60%;
     line-height: 1.5;
@@ -84,6 +84,7 @@ input[type=text] {
     border-color: var(--f_color_border);
     font-size: 100%;
     font-family: Consolas, Liberation Mono, Courier, monospace;
+    padding: 5px;
 }
 
 input:read-only {
@@ -99,7 +100,10 @@ button, .button, input[type=button], input[type=submit], input[type=reset]
     color: var(--f_color_link);
     border: none;
     text-align: center;
-    padding: 14px 16px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     text-decoration: none;
 }
 

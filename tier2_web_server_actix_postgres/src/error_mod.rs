@@ -1,11 +1,14 @@
 // error_mod.rs
+
 /// enum for library errors with thiserror
 /// thiserror generates the Display trait for enum variants
 /// user_friendly is for user message, developer_friendly is for developer log
 #[derive(thiserror::Error, Debug)]
 pub enum LibError {
+     /// Database connection error.
     #[error("Database connection error.")]
     DatabaseConnection,
+    /// Query error: {user_friendly}
     #[error("Query error: {user_friendly}")]
     QueryError {
         source_error: tokio_postgres::Error,
@@ -13,20 +16,16 @@ pub enum LibError {
         developer_friendly: String,
         source_line_column: String,
     },
-    #[error("Row_set is not single row!")]
-    NotSingleRow {
-        user_friendly: String,
-        developer_friendly: String,
-        source_line_column: String,
-    },
+    /// The value does not exist in web query: {user_friendly}
     #[error("The value does not exist in web query: {user_friendly}")]
-    GetValueFromWebQuery {
+    GetStrFromWebParams {
         user_friendly: String,
         developer_friendly: String,
         source_line_column: String,
     },
+    /// The value is not i32: {user_friendly}
     #[error("The value is not i32: {user_friendly}")]
-    GetI32FromWebQuery {
+    GetI32FromWebParams {
         user_friendly: String,
         developer_friendly: String,
         source_line_column: String,
@@ -36,6 +35,7 @@ pub enum LibError {
         Unknown(#[from] anyhow::Error),
     */
 }
+
 /// actix error has this trait for custom errors
 impl actix_web::ResponseError for LibError {
     /// html status code for error
@@ -57,6 +57,7 @@ impl actix_web::ResponseError for LibError {
         actix_web::HttpResponse::build(status_code).body(format!("{time} {}", self))
     }
 }
+
 /// time as a big Unix epoch int
 pub fn time_epoch() -> u128 {
     let time = std::time::SystemTime::now()
@@ -64,4 +65,13 @@ pub fn time_epoch() -> u128 {
         .unwrap()
         .as_millis();
     time
+}
+
+pub fn file_line_column(source_caller_location: &std::panic::Location) -> String {
+    format!(
+        "{}:{}:{}",
+        source_caller_location.file(),
+        source_caller_location.line(),
+        source_caller_location.column()
+    )
 }

@@ -1,4 +1,4 @@
-create or replace function public.webpage_hits_read(
+create or replace function public.webpage_hits_show(
 _id int)
 returns table(id integer, webpage varchar(100), hit_count integer) 
 language 'plpgsql'

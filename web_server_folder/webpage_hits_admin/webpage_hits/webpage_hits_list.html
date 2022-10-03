@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/webpage_hits_admin.css" />
+  </head>
+  <body>
+    <h1>webpage_hits_list</h1>
+
+    <details>
+      <summary>Filter on data server</summary>
+      <hr/>
+    <form action="webpage_hits_list" method="post" >
+      <p>
+        <label for="f_like_webpage">Webpage like:</label>
+        <input type="text" id="f_like_webpage" name="f_like_webpage" value="{f_like_webpage}" />
+      </p> 
+      <p>
+        <label for="f_order_by">Order by:</label>
+        <input type="text" id="f_order_by" name="f_order_by" value="{f_order_by}" />             
+      </p> 
+      <p>
+        <label for="f_order_by_direction">Order asc or desc:</label>        
+        <input type="text" id="f_order_by_direction" name="f_order_by_direction" value="{f_order_by_direction}" />
+      </p> 
+      <button type="submit" class="button" value="Submit">Filter the list</button>
+    </form>
+    <hr/>
+  </details>
+  
+    <div class="table">
+      <div></div>
+      <div></div>
+      <div>id</div>
+      <div>webpage</div>
+      <div>hit_count</div>
+      <!--row_start-->
+      <div>
+        <a class="button" href="webpage_hits_edit?id={id}">edit</a>
+      </div> 
+      <div>
+        <a class="button" href="webpage_hits_delete?id={id}">delete</a>
+      </div>
+      <div>
+        <a href="webpage_hits_show?id={id}">{id}</a>
+      </div>
+      <div>{webpage}</div>
+      <div>{hit_count}</div>
+      <!--row_end-->
+    </div>
+    <br/>
+    <div>
+      <button onclick="location.href='webpage_hits_new'" >New record</button>
+    </div>       
+  </body>
+</html>

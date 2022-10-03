@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/webpage_hits_admin.css" />
+  </head>
+  <body>
+    <h1>webpage_hits_insert</h1>
+    <p>Record inserted!</p>
+    <form>
+      <p>
+        <label for="id">Id:</label>
+        <input type="text" id="id" name="id" readonly="readonly" value="{id}" />
+      </p>
+      <p>
+        <label for="webpage">Webpage:</label>
+        <input type="text" id="webpage" name="webpage" readonly="readonly" value="{webpage}" />
+      </p>
+      <p>
+        <label for="hit_count">Count:</label>
+        <input type="text" id="hit_count" name="hit_count" readonly="readonly" value="{hit_count}" />
+      </p>
+    </form>
+    <div>
+      <button onclick="location.href='webpage_hits_list'" >List</button>
+    </div>
+  </body>
+</html>

@@ -3,7 +3,7 @@
 
 select * from webpage_hits;
 
--- crud create(insert), read, update, delete
+-- crud create(insert), read (show, list), update, delete
 -- but we need 1 more for the new records with defaults
 
 -- returns the dataset of inserted record
@@ -14,7 +14,7 @@ select *
 from webpage_hits_insert(1234,'test333',333);
 
 select *
-from webpage_hits_read(1234);
+from webpage_hits_show(1234);
 
 select *
 from webpage_hits_update(1234,'1234', 1234);
@@ -32,3 +32,15 @@ having count(*) > 1;
 
 -- drop function
 
+select * from function_params;
+
+
+select p.proname, count(*) as cnt
+FROM pg_proc p 
+group by p.proname;
+
+-- format_type(type_oid, typemod)	text	get SQL name of a data type
+
+-- pg_get_function_arguments(func_oid)
+
+select * FROM pg_proc;

@@ -1,7 +1,7 @@
 [package]
 name = "tier2_web_server_actix_postgres"
 version = "0.0.61"
-description = "07. Tutorial for Coding a database Web UI in Rust (refactoring_database_web_ui_server_side_rendering) (2022-08)"
+description = "08. Tutorial to refactor the database_web_ui_on_server (2022-10)"
 authors = ["bestia.dev"]
 homepage = "https://bestia.dev"
 edition = "2021"
@@ -23,3 +23,9 @@ tokio-postgres="0.7.6"
 dotenv="0.15.0"
 deadpool-postgres = "0.10.2"
 actix-files = "0.6.2"
+function_name = "0.3.0"
+const_format = "0.2.26"
+html-escape = "0.2.11"
+strum = { version = "0.24", features = ["derive"] }
+regex="1.6.0"
+lazy_static="1.4.0"

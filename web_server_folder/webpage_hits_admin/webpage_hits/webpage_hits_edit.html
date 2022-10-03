@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/webpage_hits_admin.css" />
+  </head>
+  <body>
+    <h1>webpage_his_edit</h1>
+    <form action="webpage_hits_update" method="post" >
+      <p>
+        <label for="id">Id:</label>
+        <input type="text" id="id" name="id" readonly="readonly" value="{id}" />
+      </p>
+      <p>
+        <label for="webpage">Webpage:</label>
+        <input type="text" id="webpage" name="webpage" value="{webpage}" />
+      </p>
+      <p>
+        <label for="hit_count">Hit_count:</label>
+        <input type="text" id="hit_count" name="hit_count" value="{hit_count}" />
+      </p>
+      <button type="submit" class="button" value="Submit">Submit</button>
+      <button type="button" class="button" onclick="location.href='webpage_hits_list'" >Cancel</button>
+    </form>
+  </body>
+</html>

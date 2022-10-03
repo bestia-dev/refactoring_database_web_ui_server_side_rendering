@@ -1,42 +1,31 @@
 //! postgres_mod.rs
 
-use crate::error_mod::LibError;
+// newtypes : forces unambiguous intent
+#[derive(Eq, Hash, PartialEq)]
+pub struct FunctionName(pub String);
+#[derive(Eq, Hash, PartialEq)]
+pub struct ParamName(pub String);
+#[derive(Eq, Hash, PartialEq)]
+pub struct ViewName(pub String);
+#[derive(Eq, Hash, PartialEq)]
+pub struct FieldName(pub String);
+
+use crate::{
+    error_mod::LibError,
+    postgres_type_mod::{PostgresFieldType, PostgresInputType},
+};
+use std::collections::HashMap;
 use tokio_postgres::error::SqlState;
-/// return the single row
-/// check if there is less or more rows and return error
-/// the row_set is consumed
-#[track_caller]
-pub fn get_single_row_owned(
-    row_set: Vec<tokio_postgres::Row>,
-) -> Result<tokio_postgres::Row, LibError> {
-    if row_set.len() != 1 {
-        let source_caller_location = std::panic::Location::caller();
-        return Err(LibError::NotSingleRow {
-            user_friendly: "".to_string(),
-            developer_friendly: "".to_string(),
-            source_line_column: format!(
-                "{}:{}:{}",
-                source_caller_location.file(),
-                source_caller_location.line(),
-                source_caller_location.column()
-            ),
-        });
-    }
-    let mut row_set = row_set;
-    // take ownership of the Row. The row_set will become empty!
-    let single_row = row_set.remove(0);
-    Ok(single_row)
-}
-type DbPool = actix_web::web::Data<deadpool_postgres::Pool>;
+
 /// run the query and catch the many different sql errors
 #[track_caller]
-pub async fn run_sql_select_query(
-    db_pool: DbPool,
+pub async fn run_sql_select_query_pool(
+    db_pool: &deadpool_postgres::Pool,
     query: &str,
     params: &[&(dyn tokio_postgres::types::ToSql + Sync)],
 ) -> Result<Vec<tokio_postgres::Row>, LibError> {
-    let client = crate::deadpool_mod::get_client_from_pool(db_pool).await?;
-    client.query(query, params).await.map_err(|err| {
+    let postgres_client = crate::deadpool_mod::get_postgres_client_from_pool(db_pool).await?;
+    postgres_client.query(query, params).await.map_err(|err| {
         /*
         many different sql errors:
         https://github.com/sfackler/rust-postgres/blob/master/tokio-postgres/src/error/sqlstate.rs
@@ -80,32 +69,9 @@ pub async fn run_sql_select_query(
         }
     })
 }
-#[track_caller]
-pub async fn run_sql_void_function(
-    db_pool: DbPool,
-    function_name: &str,
-    params: &[&(dyn tokio_postgres::types::ToSql + Sync)],
-) -> Result<(), LibError> {
-    // TODO: from params deduce parameters
-    let placeholders = "$1";
-    let query = format!("SELECT {function_name}({placeholders});");
-    let _row_set = run_sql_select_query(db_pool, &query, params).await?;
-    Ok(())
-}
-#[track_caller]
-pub async fn run_sql_single_row_function(
-    db_pool: DbPool,
-    function_name: &str,
-    params: &[&(dyn tokio_postgres::types::ToSql + Sync)],
-) -> Result<tokio_postgres::Row, LibError> {
-    let placeholders = prepare_placeholders_for_params(params);
-    let query = format!("SELECT * from {function_name}({placeholders});");
-    let row_set = run_sql_select_query(db_pool, &query, params).await?;
-    let single_row = get_single_row_owned(row_set)?;
-    Ok(single_row)
-}
+
 /// from params deduce parameters for placeholders in sql queries
-fn prepare_placeholders_for_params(
+pub fn prepare_placeholders_for_sql_params(
     params: &[&(dyn tokio_postgres::types::ToSql + Sync)],
 ) -> String {
     let mut placeholders = String::new();
@@ -118,4 +84,85 @@ fn prepare_placeholders_for_params(
         }
     }
     placeholders
+}
+
+/// Vector of all function input params with data types.
+/// Call it once on application start and store the result in a global variable.
+/// Postgres input variables can be prefixed with "in_" or just "_". Take it into consideration.
+pub async fn get_for_cache_all_function_input_params(
+    db_pool: &deadpool_postgres::Pool,
+) -> HashMap<FunctionName, HashMap<ParamName, PostgresInputType>> {
+    let query = "SELECT proname, args_def from get_function_input_params;";
+    let vec_row = run_sql_select_query_pool(db_pool, query, &[])
+        .await
+        .unwrap();
+    let mut function_input_params: HashMap<FunctionName, HashMap<ParamName, PostgresInputType>> =
+        HashMap::new();
+    for row in vec_row.iter() {
+        // newtype
+        let function_name = FunctionName(row.get(0));
+        //dbg!(&function_name);
+        let args_def: String = row.get(1);
+        //dbg!(&args_def);
+        let mut hm_name_type: HashMap<ParamName, PostgresInputType> = HashMap::new();
+        if !args_def.is_empty() {
+            //parse into Vec<(String,String)>
+            for name_and_type in args_def.split(", ") {
+                let mut spl = name_and_type.split(' ');
+                let param_name = ParamName(spl.next().unwrap().to_string());
+                // ignore OUT parameters, only input parameters
+                if param_name.0 != "OUT" {
+                    let arg_type = spl.next().unwrap().to_string();
+                    use std::str::FromStr;
+                    let arg_type = PostgresInputType::from_str(&arg_type).unwrap();
+                    hm_name_type.insert(param_name, arg_type);
+                }
+            }
+        }
+        //dbg!(&vec_name_type);
+        function_input_params.insert(function_name, hm_name_type);
+    }
+    function_input_params
+}
+
+/// Hashmap of all view fields with data types. I use it to construct the WHERE clause.
+/// Call it once on application start and store the result in a global variable.
+pub async fn get_for_cache_all_view_fields(
+    db_pool: &deadpool_postgres::Pool,
+) -> HashMap<ViewName, HashMap<FieldName, PostgresFieldType>> {
+    let query = "SELECT relname, attname, typname from get_view_fields order by relname;";
+    let vec_row = run_sql_select_query_pool(db_pool, query, &[])
+        .await
+        .unwrap();
+
+    let mut view_fields: HashMap<ViewName, HashMap<FieldName, PostgresFieldType>> = HashMap::new();
+    let mut hm_name_type = HashMap::new();
+
+    let mut old_relname = ViewName(String::new());
+    let mut relname: ViewName;
+    for row in vec_row.iter() {
+        relname = ViewName(row.get(0));
+        if relname != old_relname {
+            if !old_relname.0.is_empty() {
+                //dbg!(&vec_name_type);
+                view_fields.insert(old_relname, hm_name_type);
+                hm_name_type = HashMap::new();
+            }
+            old_relname = relname;
+        }
+        //dbg!(&relname);
+        let attname = FieldName(row.get(1));
+        //dbg!(&attname);
+        let typname: String = row.get(2);
+        //dbg!(&typname);
+        use std::str::FromStr;
+        let arg_type = PostgresFieldType::from_str(&typname).unwrap();
+        hm_name_type.insert(attname, arg_type);
+    }
+    if !old_relname.0.is_empty() {
+        //dbg!(&vec_name_type);
+        view_fields.insert(old_relname, hm_name_type);
+    }
+    // dbg!(&view_fields);
+    view_fields
 }

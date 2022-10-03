@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.hit_counter
 (
-    id integer NOT NULL DEFAULT nextval('hit_counter_id_seq'::regclass),
+    id SERIAL,
     webpage_id integer NOT NULL,
     count integer NOT NULL,
     CONSTRAINT hit_counter_pkey PRIMARY KEY (id),

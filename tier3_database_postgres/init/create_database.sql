@@ -1,0 +1,1 @@
+CREATE DATABASE webpage_hit_counter;

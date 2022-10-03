@@ -1,0 +1,51 @@
+Welcome to bestia.dev !
+Learning Rust and Wasm programming and having fun.
+I just love programming !
+
+In the last tutorial we created a working prototype for a web application that can create, read, update and delete (CRUD) data in a postgres database. The user interface is server side rendered as html5 and css3. The code is pretty basic and repetitive, because the main focus was on concepts, tools, libraries and data flow.
+We will continue to develop this project in the 8th part of the Rust tutorial series. We will refactor this web app to deduplicate code and make it more idiomatic Rust.  
+
+The first function of software is to solve a problem. In this project, the user can read and write data in a database simply using a browser.  
+The second main function of software is maintainability. Software will always with no exception need to be updated or upgraded for any reason. When we write our source code, we want to make it easier and less error-prone to make changes later.  
+Rust is the champion of fearless refactoring. The strict type system warns the developer immediately if he forgets something. And I assure you, that happens a lot.  
+
+The project name is long and descriptive because this is a tutorial. But the executable binary can have a more meaningful name like "webpage-hits-admin".  
+It is enough to rename the folder in "src/bin/" to change the name of the binary. I will also rename the web-server-folder and css file accordingly.  
+Because of this change, I will change the name inside the automation-task-rs to reflect the new binary name.  
+
+Every programming language have a way to separate code into logical modules. If that does not exist, we can still use names by prefixing them with a namespace. That will also work. This distinction is just for the human brain to reason about one problem at a time. The computer itself does not need to know about this separation.  
+Our project is 3-tier and it is not a single coherent project, not even the same programming language. If we want to understand easily how the data flows from one project to the other, it is smart to give items the same name everywhere. We can then use the simple "Find text" tool of VSCode to find everything about an item.  
+
+It is time to push the new project to a new remote repository on github. So if something happens to our developing environment in the container, we have our work safely stored on github. Github helps us with a few lines of incantation that we just copy and paste. For commit and init repository we can use the simple VSCode graphical interface.
+
+All the data manipulation will take place in the postgres database. I want to have functions and views for everything: create database, create tables, system wide objects like drop function, list of all functions with parameters and data types, list of all views with fields and data types. I need some test sql statements and finally the webpage hits functions deserve a folder to neatly separate them from the rest.
+
+We will change the description and add some more dependencies to Cargo-toml.
+
+Finally we are coming back to our Rust code. It is very difficult to find a sequence that shows step by step how to code. Coding is iterative. First you code something simple, then more complex, then you try to deduplicate the code. Then you find a better idea or process and repeat everything many times. Coding is not straightforward. There is never just one best solution. I will show what I think is reasonable for a coding tutorial and I will spare you from all my trials and errors.
+
+The web parameters we receive from the browser as form or query parameters are just strings. The database functions and sql statements expect strong types. We need to know the strong type for every parameter or field. We will cache this information at the start of the application because we will need it very frequently.  
+
+For prototyping I use unwrap very often. Later I will refactor it with some user friendly and developer friendly error messages.
+Instead of a vector collection, here I use HashMap because I will always search this info by some name: function name, parameter name, view name, or field name.
+I will then encapsulate this HashMaps into a single app state object to have global access to this information.
+
+It is more clean to have separate modules for different objects, even if there is not much code in it. That way, the next developer will read and follow the code easily.
+
+We want to make it easy to add new functionality, 2 lines should be enough. The 7 steps will be encapsulated inside an object. The developer can also use step by step functions if some customization is needed. There is some basic difference between single row and multi row sql statements. Therefore I will create 2 separate modules. Later we can deduplicate common code.
+
+After these changes the code will be really simple and it will be easy to make a code generator for new tables in the database. 
+
+The code is very repetitive, but we want to leave space to the developer if some customization is needed in the future. Too much automation can hinder coding of special exceptions.
+
+Rust objects are different from object-oriented languages. The methods are just regular functions with some sugar to encapsulates them together. There is no real difference between a function and a method.
+
+The Rust language has integrated doc-comments with 3 slashes. They are then immediately visible in autocompletion and later they are part of the documentation using cargo doc. All inside the code. Great!
+
+In the last Rust version they added the panic location object that we can use to give developer a reasonable location where the error really happened.
+
+
+This is all for today.  
+Thank you for watching and see you next time.  
+Find my code and tutorials on bestia.dev or github.
+

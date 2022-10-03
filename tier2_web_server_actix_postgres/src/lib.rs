@@ -5,6 +5,15 @@ mod deadpool_mod;
 mod error_mod;
 mod postgres_mod;
 mod webpage_hits_mod;
+mod postgres_type_mod;
+mod app_state_mod;
+mod server_side_single_row_mod;
+mod html_templating_mod;
+mod server_side_multi_row_mod;
 
 pub use actix_mod::config_route_main;
+pub use app_state_mod::AppState;
 pub use deadpool_mod::deadpool_start_and_check;
+pub use postgres_mod::get_for_cache_all_function_input_params;
+pub use postgres_mod::get_for_cache_all_view_fields;
+
