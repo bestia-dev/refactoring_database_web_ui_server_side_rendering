@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION drop_function(_name text, OUT functions_dropped int)
 $func$
 -- drop all functions with given _name regardless of function parameters
 -- test it: create function test1. Then 
--- select drop_function('test1');
+-- select drop_function('webpage_hits_delete');
 DECLARE
    _sql text;
 BEGIN

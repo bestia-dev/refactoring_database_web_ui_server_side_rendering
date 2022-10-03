@@ -10,8 +10,11 @@
 // 6. mix presentation and data, because this is server-side rendering
 // 7. return a response with no cache (because data in database can change fast)
 
-
-use crate::{actix_mod::WebParams, postgres_mod::FunctionName, postgres_type_mod::PostgresValue};
+use crate::{
+    actix_mod::WebParams,
+    postgres_mod::FunctionName,
+    postgres_type_mod::PostgresValue,
+};
 
 // type aliases: for less verbose types and better readability of the code
 type DataAppState = actix_web::web::Data<crate::AppState>;
@@ -27,7 +30,6 @@ pub struct ServerSideSingleRow<'a> {
     web_params: WebParams,
     sql_params: Vec<PostgresValue>,
 }
-
 
 impl<'a> ServerSideSingleRow<'a> {
     /// constructor for the server side rendering object
@@ -53,7 +55,6 @@ impl<'a> ServerSideSingleRow<'a> {
             sql_params: vec![],
         }
     }
-
 
     /// typical steps for a web app function for single Row sql function (or void function)
     /// These steps can be called separately if some customization is needed
@@ -84,22 +85,32 @@ impl<'a> ServerSideSingleRow<'a> {
         // endregion
     }
 
-
     /// prepares input params for sql function inside struct field sql_params
+    /// the param order is important
     pub fn prepare_function_params(&mut self) {
-        let func_hm_name_type = self
+        let name_type = self
             .app_state
             .sql_function_input_params
             .get(&self.function_name)
             .unwrap();
 
-        for (param_name, sql_type) in func_hm_name_type.iter() {
+        let param_name_order = self
+            .app_state
+            .sql_function_input_params_order
+            .get(&self.function_name)
+            .unwrap();
+
+        // params must be in the correct order
+        for param_name in param_name_order.iter() {
             let name = param_name
                 .0
                 .trim_start_matches("_")
                 .trim_start_matches("in_");
-            //dbg!(&name);
-            //dbg!(sql_type.as_ref());
+            // dbg!(&name);
+
+            let sql_type = name_type.get(&param_name).unwrap();
+
+            // dbg!(sql_type.as_ref());
             match sql_type.as_ref() {
                 "character" => {
                     self.sql_params.push(PostgresValue::String(
@@ -113,7 +124,8 @@ impl<'a> ServerSideSingleRow<'a> {
                 _ => panic!("sql_type is unknown: {:?}", sql_type),
             }
         }
-        //dbg!(&vec_multi_type);
+
+        // dbg!(&self.sql_params);
     }
 
     /// returns a reference to the values in the struct field sql_params

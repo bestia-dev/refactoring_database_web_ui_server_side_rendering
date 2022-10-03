@@ -44,6 +44,15 @@ The Rust language has integrated doc-comments with 3 slashes. They are then imme
 
 In the last Rust version they added the panic location object that we can use to give developer a reasonable location where the error really happened.
 
+I want to separate the work of the programmer and graphical designer. I want the graphical designer to prepare a complete and beautiful HTML file with CSS. One that I can open in the browser and admire the talent that I don't have, like most of programmers out there. Then I just add some placeholders that I can replace in my code with a simple templating engine. Nothing fancy for now. Just a simple search and replace.
+
+For the multi-row object I want to add some filtering and ordering functionality. For that I will add the fields "where" and "order-by" into the struct Server-Side-Multi-Row. In the Rust code I will prepare the s-q-l clause with parameters. Then I will get the web-params and format a correct sql statement.
+
+Now I need the html files from my friendly web designer. For this tutorial I just made them myself, so don't expect some marvel. They are all correct html and even correct micro-xml files. That will come handy later with more complex templating.
+
+There is still a lot of duplicate code. As I mentioned earlier coding is iterative and we will return to deduplicate this in some next tutorial. For learning purposes it is not good to jump directly to something that is hard to understand.
+
+We can now commit and push, then build and run the web application. 
 
 This is all for today.  
 Thank you for watching and see you next time.  

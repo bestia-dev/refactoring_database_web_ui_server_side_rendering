@@ -5,7 +5,6 @@
 // you implements traits. But for this simple example I don't need to complicate.
 // Postgres have many different names for data-types and it is confusing.
 
-
 /// PostgresInputType names as string come out of the view get_function_input_params and
 /// is used for input params for functions.
 /// The names are strictly in lowercase, but Rust insist the enum variant are capitalized.
@@ -20,7 +19,6 @@ pub enum PostgresInputType {
     /// text (max 2GB)
     Text,
 }
-
 
 /// PostgresFieldType names as string come out of the view get_view_fields and
 /// is used for constructing the WHERE clause.
@@ -39,7 +37,6 @@ pub enum PostgresFieldType {
     Text,
 }
 
-
 /// PostgresValue can contain values of different data types.
 /// For this simple example this is easier then implementing traits for every type.
 /// I want deliberately limit the use to just a few data types for simplicity.
@@ -48,4 +45,3 @@ pub enum PostgresValue {
     String(String),
     I32(i32),
 }
-

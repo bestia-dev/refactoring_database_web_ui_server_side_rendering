@@ -5,7 +5,7 @@
 /// user_friendly is for user message, developer_friendly is for developer log
 #[derive(thiserror::Error, Debug)]
 pub enum LibError {
-     /// Database connection error.
+    /// Database connection error.
     #[error("Database connection error.")]
     DatabaseConnection,
     /// Query error: {user_friendly}

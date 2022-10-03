@@ -1,9 +1,21 @@
 //! postgres_mod.rs
 
+// type alias to make it more concise, precise and readable
+/// params are mostly searched by param name
+pub type ParamsNameType = HashMap<ParamName, PostgresInputType>;
+/// functions are always searched by function name
+pub type SqlFunctionInputParams = HashMap<FunctionName, ParamsNameType>;
+/// functions params must be in correct order
+pub type SqlFunctionInputParamsOrder = HashMap<FunctionName, Vec<ParamName>>;
+/// fields are always searched by field name
+pub type FieldsNameType = HashMap<FieldName, PostgresFieldType>;
+/// views are always searched by view name
+pub type SqlViewFields = HashMap<ViewName, FieldsNameType>;
+
 // newtypes : forces unambiguous intent
-#[derive(Eq, Hash, PartialEq)]
+#[derive(Eq, Hash, PartialEq, Clone)]
 pub struct FunctionName(pub String);
-#[derive(Eq, Hash, PartialEq)]
+#[derive(Eq, Hash, PartialEq, Clone)]
 pub struct ParamName(pub String);
 #[derive(Eq, Hash, PartialEq)]
 pub struct ViewName(pub String);
@@ -91,22 +103,22 @@ pub fn prepare_placeholders_for_sql_params(
 /// Postgres input variables can be prefixed with "in_" or just "_". Take it into consideration.
 pub async fn get_for_cache_all_function_input_params(
     db_pool: &deadpool_postgres::Pool,
-) -> HashMap<FunctionName, HashMap<ParamName, PostgresInputType>> {
+) -> (SqlFunctionInputParams, SqlFunctionInputParamsOrder) {
     let query = "SELECT proname, args_def from get_function_input_params;";
     let vec_row = run_sql_select_query_pool(db_pool, query, &[])
         .await
         .unwrap();
-    let mut function_input_params: HashMap<FunctionName, HashMap<ParamName, PostgresInputType>> =
-        HashMap::new();
+    let mut function_input_params: SqlFunctionInputParams = HashMap::new();
+    let mut function_input_params_order: SqlFunctionInputParamsOrder = HashMap::new();
     for row in vec_row.iter() {
         // newtype
         let function_name = FunctionName(row.get(0));
         //dbg!(&function_name);
         let args_def: String = row.get(1);
         //dbg!(&args_def);
-        let mut hm_name_type: HashMap<ParamName, PostgresInputType> = HashMap::new();
+        let mut hm_name_type: ParamsNameType = HashMap::new();
+        let mut params_order = vec![];
         if !args_def.is_empty() {
-            //parse into Vec<(String,String)>
             for name_and_type in args_def.split(", ") {
                 let mut spl = name_and_type.split(' ');
                 let param_name = ParamName(spl.next().unwrap().to_string());
@@ -115,27 +127,27 @@ pub async fn get_for_cache_all_function_input_params(
                     let arg_type = spl.next().unwrap().to_string();
                     use std::str::FromStr;
                     let arg_type = PostgresInputType::from_str(&arg_type).unwrap();
-                    hm_name_type.insert(param_name, arg_type);
+                    hm_name_type.insert(param_name.clone(), arg_type);
+                    params_order.push(param_name);
                 }
             }
         }
         //dbg!(&vec_name_type);
-        function_input_params.insert(function_name, hm_name_type);
+        function_input_params.insert(function_name.clone(), hm_name_type);
+        function_input_params_order.insert(function_name, params_order);
     }
-    function_input_params
+    (function_input_params, function_input_params_order)
 }
 
 /// Hashmap of all view fields with data types. I use it to construct the WHERE clause.
 /// Call it once on application start and store the result in a global variable.
-pub async fn get_for_cache_all_view_fields(
-    db_pool: &deadpool_postgres::Pool,
-) -> HashMap<ViewName, HashMap<FieldName, PostgresFieldType>> {
+pub async fn get_for_cache_all_view_fields(db_pool: &deadpool_postgres::Pool) -> SqlViewFields {
     let query = "SELECT relname, attname, typname from get_view_fields order by relname;";
     let vec_row = run_sql_select_query_pool(db_pool, query, &[])
         .await
         .unwrap();
 
-    let mut view_fields: HashMap<ViewName, HashMap<FieldName, PostgresFieldType>> = HashMap::new();
+    let mut view_fields: SqlViewFields = HashMap::new();
     let mut hm_name_type = HashMap::new();
 
     let mut old_relname = ViewName(String::new());

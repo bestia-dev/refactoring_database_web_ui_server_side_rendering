@@ -14,7 +14,6 @@
 // TODO: dynamically construct a where clause only for the used filters for efficiency
 // TODO: dynamically construct the fields list only for fields used in the html (for efficiency)
 
-
 use lazy_static::lazy_static;
 use regex::Regex;
 
@@ -44,7 +43,6 @@ pub struct ServerSideMultiRow<'a> {
     sql_order_by: String,
 }
 
-
 impl<'a> ServerSideMultiRow<'a> {
     /// constructor for the server side rendering object
     /// It takes all the data needed to execute the function
@@ -72,7 +70,6 @@ impl<'a> ServerSideMultiRow<'a> {
             sql_order_by: String::new(),
         }
     }
-
 
     /// typical steps for a web app function for multi Row sql statement
     /// These steps can be called separately if some customization is needed
@@ -126,8 +123,7 @@ impl<'a> ServerSideMultiRow<'a> {
         crate::actix_mod::return_response_no_cache(body)
         // endregion
     }
-    
-    
+
     /// prepares where clause and params inside struct field sql_where and sql_params
     /// filter: f_like_webpage
     /// if starts with f_like_ use the like operator
@@ -141,7 +137,7 @@ impl<'a> ServerSideMultiRow<'a> {
                 // every group captured inside the match
                 for i in 1..m.len() {
                     let param_name = m.get(i).unwrap().as_str();
-                    dbg!(param_name);
+                    // dbg!(param_name);
                     // check if param exists in web_params
                     if let Some(param_from_web) =
                         self.web_params.0.iter().find(|&x| x.0 == param_name)
@@ -187,9 +183,9 @@ impl<'a> ServerSideMultiRow<'a> {
         }
         // endregion: order by
 
-        dbg!(&self.sql_where);
-        dbg!(&self.sql_params);
-        dbg!(&self.sql_order_by);
+        // dbg!(&self.sql_where);
+        // dbg!(&self.sql_params);
+        // dbg!(&self.sql_order_by);
     }
 
     /// returns a reference to the values in the struct field sql_params
@@ -221,7 +217,7 @@ impl<'a> ServerSideMultiRow<'a> {
             "SELECT * FROM {} {} {};",
             self.view_name.0, self.sql_where, self.sql_order_by
         );
-        dbg!(&query);
+        // dbg!(&query);
         // TODO: convert sql errors in a single place
         let row_set = postgres_client.query(&query, &sql_params).await.unwrap();
 
