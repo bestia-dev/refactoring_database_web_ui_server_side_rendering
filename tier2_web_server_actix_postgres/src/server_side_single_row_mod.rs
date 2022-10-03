@@ -10,17 +10,10 @@
 // 6. mix presentation and data, because this is server-side rendering
 // 7. return a response with no cache (because data in database can change fast)
 
-use crate::{
-    actix_mod::WebParams,
-    postgres_mod::FunctionName,
-    postgres_type_mod::PostgresValue,
-};
-
-// type aliases: for less verbose types and better readability of the code
-type DataAppState = actix_web::web::Data<crate::AppState>;
-type WebForm = actix_web::web::Form<Vec<(String, String)>>;
-type WebQuery = actix_web::web::Query<Vec<(String, String)>>;
-type ResultResponse = actix_web::Result<actix_web::HttpResponse>;
+use crate::actix_mod::{DataAppState, ResultResponse, WebForm, WebQuery};
+use crate::postgres_mod::FunctionName;
+use crate::postgres_type_mod::PostgresValue;
+use crate::web_params_mod::WebParams;
 
 /// the main ServerSideSingleRow object (struct with implementation)
 pub struct ServerSideSingleRow<'a> {

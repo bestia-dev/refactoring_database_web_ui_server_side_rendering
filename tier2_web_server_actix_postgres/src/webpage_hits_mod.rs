@@ -1,11 +1,8 @@
 //! webpage_hits_mod.rs
 
 // type aliases: for less verbose types and better readability of the code
-type ResultResponse = actix_web::Result<actix_web::HttpResponse>;
-type WebForm = actix_web::web::Form<Vec<(String, String)>>;
-type WebQuery = actix_web::web::Query<Vec<(String, String)>>;
-type DataAppState = actix_web::web::Data<crate::AppState>;
 
+use crate::actix_mod::{DataAppState, ResultResponse, WebForm, WebQuery};
 use crate::server_side_multi_row_mod::ServerSideMultiRow;
 use crate::server_side_single_row_mod::ServerSideSingleRow;
 use actix_web::web::resource;

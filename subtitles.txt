@@ -52,7 +52,9 @@ Now I need the html files from my friendly web designer. For this tutorial I jus
 
 There is still a lot of duplicate code. As I mentioned earlier coding is iterative and we will return to deduplicate this in some next tutorial. For learning purposes it is not good to jump directly to something that is hard to understand.
 
-We can now commit and push, then build and run the web application. 
+We can now commit and push, then build and run the web application. Get used to it, you will repeat this a lot.
+
+We changed a lot of code. It took quite some time, but the functionality is completely unchanged. Why have we even done that? Because we will have a lot less work to add the next database table to this application. Maintainability is the key to good coding.
 
 This is all for today.  
 Thank you for watching and see you next time.  

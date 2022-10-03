@@ -17,15 +17,10 @@
 use lazy_static::lazy_static;
 use regex::Regex;
 
-use crate::actix_mod::WebParams;
+use crate::actix_mod::{DataAppState, ResultResponse, WebForm, WebQuery};
 use crate::postgres_mod::{FieldName, ViewName};
 use crate::postgres_type_mod::PostgresValue;
-
-// type aliases: for less verbose types and better readability of the code
-type DataAppState = actix_web::web::Data<crate::AppState>;
-type WebForm = actix_web::web::Form<Vec<(String, String)>>;
-type WebQuery = actix_web::web::Query<Vec<(String, String)>>;
-type ResultResponse = actix_web::Result<actix_web::HttpResponse>;
+use crate::web_params_mod::WebParams;
 
 lazy_static! {
     static ref RGX_01: Regex = Regex::new(r###"\{(.+?)}"###).unwrap();

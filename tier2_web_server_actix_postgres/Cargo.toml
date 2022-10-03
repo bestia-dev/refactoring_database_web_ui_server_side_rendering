@@ -1,6 +1,6 @@
 [package]
 name = "tier2_web_server_actix_postgres"
-version = "0.0.67"
+version = "0.0.69"
 description = "08. Tutorial to refactor the database_web_ui_on_server (2022-10)"
 authors = ["bestia.dev"]
 homepage = "https://bestia.dev"

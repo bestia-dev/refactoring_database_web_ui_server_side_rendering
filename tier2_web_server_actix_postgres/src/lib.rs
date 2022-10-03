@@ -9,6 +9,7 @@ mod postgres_mod;
 mod postgres_type_mod;
 mod server_side_multi_row_mod;
 mod server_side_single_row_mod;
+mod web_params_mod;
 mod webpage_hits_mod;
 
 pub use actix_mod::config_route_main;
