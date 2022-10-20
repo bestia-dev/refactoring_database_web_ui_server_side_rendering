@@ -1,5 +1,6 @@
 create or replace view public.webpage_hits
 as
+-- select * from webpage_hits;
 
 select w.id,
 w.webpage,
