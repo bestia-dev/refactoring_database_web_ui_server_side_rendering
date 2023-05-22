@@ -31,7 +31,7 @@ We will continue to develop this project in the 8th part of the [Rust tutorial s
 
 This project has also a youtube video tutorial. Watch it:
 <!-- markdownlint-disable MD033 -->
-[<img src="https://bestia.dev/youtube/refactoring_database_web_ui_server_side_rendering.jpg" width="400px">](https://bestia.dev/youtube/refactoring_database_web_ui_server_side_rendering.html)
+[<img src="https://bestia.dev/youtube/refactoring_database_web_ui_server_side_rendering.jpg?_" width="400px">](https://bestia.dev/youtube/refactoring_database_web_ui_server_side_rendering.html)
 <!-- markdownlint-enable MD033 -->
 
 ## Motivation
