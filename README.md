@@ -9,6 +9,8 @@
 
 [comment]: # (auto_cargo_toml_to_md end)
 
+![status](https://img.shields.io/badge/tutorial-yellow) 
+
 [comment]: # (auto_lines_of_code start)
 
 [![Lines in Rust code](https://img.shields.io/badge/Lines_in_Rust-230-green.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
