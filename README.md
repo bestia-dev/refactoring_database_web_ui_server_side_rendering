@@ -1,17 +1,17 @@
-[comment]: # (auto_md_to_doc_comments segment start A)
+[//]: # (auto_md_to_doc_comments segment start A)
 
 # refactoring_database_web_ui_server_side_rendering
 
-[comment]: # (auto_cargo_toml_to_md start)
+[//]: # (auto_cargo_toml_to_md start)
 
 **08. Tutorial to refactor the database_web_ui_on_server (2022-10)**  
 ***version: 0.1.01 date: 2022-10-10 author: [bestia.dev](https://bestia.dev) repository: [Github](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering)***  
 
-[comment]: # (auto_cargo_toml_to_md end)
+[//]: # (auto_cargo_toml_to_md end)
 
-![status](https://img.shields.io/badge/tutorial-yellow) 
+ ![tutorial](https://img.shields.io/badge/tutorial-yellow)
 
-[comment]: # (auto_lines_of_code start)
+[//]: # (auto_lines_of_code start)
 
 [![Lines in Rust code](https://img.shields.io/badge/Lines_in_Rust-230-green.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
 [![Lines in Doc comments](https://img.shields.io/badge/Lines_in_Doc_comments-9-blue.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
@@ -19,9 +19,11 @@
 [![Lines in examples](https://img.shields.io/badge/Lines_in_examples-0-yellow.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
 [![Lines in tests](https://img.shields.io/badge/Lines_in_tests-0-orange.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
 
-[comment]: # (auto_lines_of_code end)
+[//]: # (auto_lines_of_code end)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/blob/main/LICENSE) [![Rust](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/workflows/RustAction/badge.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/) ![Hits](https://bestia.dev/webpage_hit_counter/get_svg_image/0.svg)
+ [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/blob/main/LICENSE)
+ [![Rust](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/workflows/RustAction/badge.svg)](https://github.com/bestia-dev/refactoring_database_web_ui_server_side_rendering/)
+ ![refactoring_database_web_ui_server_side_rendering](https://bestia.dev/webpage_hit_counter/get_svg_image/627386887.svg)
 
 Hashtags: #rust #rustlang #tutorial  
 My projects on Github are more like a tutorial than a finished product: [bestia-dev tutorials](https://github.com/bestia-dev/tutorials_rust_wasm).
@@ -74,4 +76,4 @@ You know the price of a beer in your local bar ;-) So I can drink a free beer fo
 
 [Na zdravje!](https://translate.google.com/?hl=en&sl=sl&tl=en&text=Na%20zdravje&op=translate) [Alla salute!](https://dictionary.cambridge.org/dictionary/italian-english/alla-salute) [Prost!](https://dictionary.cambridge.org/dictionary/german-english/prost) [Nazdravlje!](https://matadornetwork.com/nights/how-to-say-cheers-in-50-languages/) 🍻
 
-[comment]: # (auto_md_to_doc_comments segment end A)
+[//]: # (auto_md_to_doc_comments segment end A)
