@@ -122,7 +122,7 @@ fn task_build() {
 cd web_server_folder ; ../target/debug/webpage_hits_admin ; cd ..
     In the browser or in curl open 
 http://localhost:8080/webpage_hits_admin/webpage_hits/webpage_hits_list
-    if ok, then
+    If ok then
 cargo auto release
 {RESET}"#
     );
@@ -154,7 +154,7 @@ fn task_release() {
 cd web_server_folder ; ../target/release/webpage_hits_admin; cd ..
     In the browser or in curl open 
 http://localhost:8080/webpage_hits_admin/webpage_hits/webpage_hits_list
-    if ok, then
+    If ok then
 cargo auto doc
 {RESET}"#,
     );
@@ -179,7 +179,7 @@ fn task_doc() {
     // message to help user with next task
     println!(
         r#"{YELLOW}
-    After `cargo auto doc`, check `docs/index.html`. If ok, then test the documentation code examples
+    After `cargo auto doc`, check `docs/index.html`. If ok then test the documentation code examples
 cargo auto test
 {RESET}"#
     );
@@ -190,7 +190,7 @@ fn task_test() {
     run_shell_command("cargo test");
     println!(
         r#"{YELLOW}
-    After `cargo auto test`. If ok, then 
+    After `cargo auto test`. If ok then 
 cargo auto commit_and_push "message"
     with mandatory commit message
 {RESET}"#
