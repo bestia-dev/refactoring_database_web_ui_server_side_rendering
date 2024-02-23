@@ -104,7 +104,7 @@ fn completion() {
 /// build every member of workspace. One is wasm project, so instead of cargo build, I use wam-pack build.
 /// for faster build I will change only the version number to members that was modified
 fn task_build() {
-    //let cargo_toml = CargoToml::read();
+    //let cargo_toml = cl::CargoToml::read();
     // auto_check_micro_xml("web_server_folder/webpage_hits_admin");
     cl::auto_version_increment_semver_or_date();
     cl::run_shell_command("cargo fmt");
@@ -130,7 +130,7 @@ cargo auto release
 /// it deserves the same version number for the release build. It means that it will build all members. 
 /// A little slower than only build.
 fn task_release() {
-    // let cargo_toml = CargoToml::read();
+    // let cargo_toml = cl::CargoToml::read();
     //auto_check_micro_xml("web_server_folder/webpage_hits_admin");
     auto_version_increment_semver_or_date_forced();    
     cl::run_shell_command("cargo fmt");
@@ -228,7 +228,7 @@ r#"
 /// publish to web for podman container and git tag
 fn task_publish_to_web() {
     println!(r#"{YELLOW}Use ssh-agent and ssh-add to store the credentials.{RESET}"#);
-    let cargo_toml = CargoToml::read();
+    let cargo_toml = cl::CargoToml::read();
     // git tag
     let shell_command = format!(
         "git tag -f -a v{version} -m version_{version}",
