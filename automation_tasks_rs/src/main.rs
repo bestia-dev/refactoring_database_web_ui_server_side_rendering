@@ -50,7 +50,7 @@ fn match_arguments_and_call_tasks(mut args: std::env::Args) {
                 } else if &task == "publish_to_web" {
                     task_publish_to_web();
                 } else {
-                    println!("{RED}Error: Task {task} is unknown.{RESET}");
+                    eprintln!("{RED}Error: Task {task} is unknown.{RESET}");
                     print_help();
                 }
             }
@@ -62,18 +62,21 @@ fn match_arguments_and_call_tasks(mut args: std::env::Args) {
 fn print_help() {
     println!(
         r#"
-    {YELLOW}Welcome to cargo-auto !
-    This program automates your custom tasks when developing a Rust project.{RESET}
+    {YELLOW}Welcome to cargo-auto !{RESET}
+    {YELLOW}This program automates your custom tasks when developing a Rust project.{RESET}
 
-    User defined tasks in automation_tasks_rs:
-cargo auto build - builds the crate in debug mode, fmt, increment version
-cargo auto release - builds the crate in release mode, fmt, increment version
-cargo auto doc - builds the docs, copy to docs directory
-cargo auto test - runs all the tests
-cargo auto commit_and_push "message" - commits with message and push with mandatory message
-    (If you use SSH, it is easy to start the ssh-agent in the background and ssh-add your credentials for git.)
-cargo auto publish_to_web - publish to my google VM, git tag
-    (You need credentials for publishing. I use ssh-agent and ssh-add to store my credentials for SSH.)
+    {YELLOW}User defined tasks in automation_tasks_rs:{RESET}
+{GREEN}cargo auto build{RESET} - {YELLOW}builds the crate in debug mode, fmt, increment version{RESET}
+{GREEN}cargo auto release{RESET} - {YELLOW}builds the crate in release mode, fmt, increment version{RESET}
+{GREEN}cargo auto doc{RESET} - {YELLOW}builds the docs, copy to docs directory{RESET}
+{GREEN}cargo auto test{RESET} - {YELLOW}runs all the tests{RESET}
+{GREEN}cargo auto commit_and_push "message"{RESET} - {YELLOW}commits with message and push with mandatory message{RESET}
+    {YELLOW}It is preferred to use SSH for git push to GitHub.{RESET}
+    {YELLOW}<https://github.com/bestia-dev/docker_rust_development/blob/main/ssh_easy.md>{YELLOW}
+    {YELLOW}On the very first commit, this task will initialize a new local git repository and create a remote GitHub repo.{RESET}
+    {YELLOW}In that case the task needs the Personal Access Token Classic from <https://github.com/settings/tokens>{RESET}
+{GREEN}cargo auto publish_to_web{RESET} - {YELLOW}publish to my google VM, git tag{RESET}
+    {YELLOW}You need credentials for publishing. I use ssh-agent and ssh-add to store my credentials for SSH.{RESET}
 "#
     );
 }
@@ -181,7 +184,11 @@ fn task_doc() {
     // message to help user with next move
     println!(
         r#"
-    {YELLOW}After `cargo auto doc`, check `docs/index.html`. If ok then test the documentation code examples{RESET}
+    {YELLOW}After `cargo auto doc`, ctrl-click on `docs/index.html`. 
+    It will show the index.html in VSCode Explorer, then right-click and choose "Show Preview".
+    This works inside the CRDE container, because of the extension "Live Preview" 
+    <https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server>
+    If ok then run the tests in code and the documentation code examples.{RESET}
 {GREEN}cargo auto test{RESET}
 "#
     );
@@ -206,6 +213,9 @@ fn task_commit_and_push(arg_2: Option<String>) {
         // early exit
         return;
     };
+
+    // if description or topics/keywords/tags have changed
+    cl::description_and_topics_to_github();
 
     // init repository if needed. If it is not init then normal commit and push.
     if !cl::init_repository_if_needed(&message) {
