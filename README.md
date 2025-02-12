@@ -12,6 +12,7 @@
  ![maintained](https://img.shields.io/badge/maintained-green)
  ![ready_for_use](https://img.shields.io/badge/ready_for_use-green)
  ![tutorial](https://img.shields.io/badge/tutorial-yellow)
+ ![youtube](https://img.shields.io/badge/youtube-yellow)
 
 [//]: # (auto_lines_of_code start)
 
