@@ -9,6 +9,8 @@
 
 [//]: # (auto_cargo_toml_to_md end)
 
+ ![maintained](https://img.shields.io/badge/maintained-green)
+ ![ready_for_use](https://img.shields.io/badge/ready_for_use-green)
  ![tutorial](https://img.shields.io/badge/tutorial-yellow)
 
 [//]: # (auto_lines_of_code start)
