@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 [//]: # (auto_md_to_doc_comments segment start A)
 
 # refactoring_database_web_ui_server_side_rendering
